@@ -8,7 +8,7 @@ require('./bootstrap');
 
 window.Vue = require('vue');
 
-import VueMask from 'v-mask'
+import VueMask from 'v-mask';
 Vue.use(VueMask);
 
 /**

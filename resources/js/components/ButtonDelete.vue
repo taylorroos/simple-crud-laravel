@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent="confirmDelete()">
-    <button class="btn btn-danger">Excluir</button>
+    <button :disabled="inprogress" class="btn btn-danger">{{btnText}}</button>
   </form>
 </template>
 <script>
@@ -8,6 +8,12 @@ import Swal from "sweetalert2";
 import axios from "axios";
 export default {
   props: ["url"],
+  data() {
+    return {
+      inprogress: false,
+      btnText: 'Excluir'
+    }
+  },
   methods: {
     confirmDelete() {
       Swal.fire({
@@ -20,10 +26,17 @@ export default {
         confirmButtonText: "Sim, excluir"
       }).then(result => {
         if (result.value) {
+          this.inprogress = true;
+          this.btnText = 'Excluindo...';
           axios.delete(this.url).then(response => {
               window.location.reload()
+              this.inprogress = false;
+              this.btnText = 'Excluir';
           }).catch(()=>{
               window.location.reload()
+              this.inprogress = false;
+              this.btnText = 'Excluir';
+
           });
         }
       });
